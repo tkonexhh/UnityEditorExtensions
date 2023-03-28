@@ -102,9 +102,18 @@ namespace UnityToolbarExtender
                 }
                 else
                 {
-                    string scenePath = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    EditorSceneManager.OpenScene(scenePath);
-                    EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath));
+                    //会找到相似的名字上面去 需要进一步处理
+                    for (int i = 0; i < guids.Length; i++)
+                    {
+                        string scenePath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                        if (scenePath.EndsWith($"{sceneToOpen}.unity"))
+                        {
+                            EditorSceneManager.OpenScene(scenePath);
+                            EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath));
+                            break;
+                        }
+
+                    }
                     // EditorApplication.isPlaying = true;
                 }
             }
